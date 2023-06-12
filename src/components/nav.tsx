@@ -1,14 +1,28 @@
 import React, { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
+import useAuth from '../hooks/useAuth';
 
 const Nav = () => {
+    const { isLoggedIn, handleLogout  } = useAuth();
+
     return (
         <nav className="bg-neutral-200 px-4 py-2">
             <div className="container">
-                <ul className="flex">
-                    <NavLink to="/">Home</NavLink>
-                    <NavLink to="/counter">Counter</NavLink>
-                </ul>
+                <div className="flex justify-between">
+                    <div className="flex">
+                        <NavLink to="/">Home</NavLink>
+                        <NavLink to="/counter">Counter</NavLink>
+                    </div>
+                    <div className="flex">
+                        {isLoggedIn ? (
+                            <button className="border px-2 mr-2" onClick={handleLogout }>
+                                logout
+                            </button>
+                        ) : (
+                            <NavLink to="/login">Login</NavLink>
+                        )}
+                    </div>
+                </div>
             </div>
         </nav>
     );
@@ -22,8 +36,8 @@ interface NavLinkProps {
 }
 const NavLink = ({ to, children }: NavLinkProps) => {
     return (
-        <li className="mx-2">
+        <div className="mx-2">
             <Link to={to}>{children}</Link>
-        </li>
+        </div>
     );
 };
